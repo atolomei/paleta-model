@@ -8,9 +8,9 @@
   <name>paleta-model</name>
   
   
-  <url>http://maven.apache.org</url>
-<version>0.1-beta</version>
-  <packaging>jar</packaging>
+  	<url>http://maven.apache.org</url>
+	<version>0.1-beta</version>
+  	<packaging>jar</packaging>
 
 
   <properties>
@@ -42,8 +42,6 @@
 	  Paleta Model shared by Client and Server 
   </description>
   
-  
-  
 	<repositories>
 		<repository>
 			<id>my-local-repo</id>
@@ -55,8 +53,6 @@
 			<url>https://maven.novamens.com/nexus/content/repositories/releases/</url>
 		</repository>
 	</repositories>
-
-
 
 	<developers>
         <developer>
@@ -71,14 +67,9 @@
         </developer>
     </developers>
 
-
-
-
   <dependencies>
     
-    
-    
-    		<!-- s. LOGGING ========================================================  -->
+   		<!-- s. LOGGING ========================================================  -->
     	
     	<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -195,20 +186,5 @@
 		</plugins>
 	</build>
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
 </project>
