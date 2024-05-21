@@ -25,9 +25,11 @@ public class TablaPosicion extends JsonObject implements Serializable {
 	public String getEquipo() {
 		return equipo;
 	}
+	
 	public void setEquipo(String equipo) {
 		this.equipo = equipo;
 	}
+	
 	public int getPuntos() {
 		return puntos;
 	}
