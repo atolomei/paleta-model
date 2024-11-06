@@ -33,11 +33,94 @@ h4 {font-size: 1.2em;  margin:0; text-align:center;}
 .info-pill-payload {height: 29em; min-height: 580px;}
 .info-pill .longb {height: 50em;}
 .info-pill .longb .image-container {height:250px;}
-.list-item {padding: 0.2em 0;}
+
+/*TABLA DE POSICIONES*/
+.section-content {
+	 display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+	border:2px solid red;
+}
+.group-list {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr; 
+	grid-column-gap: 10px;
+	justify-content: center;
+	align-content: center; 
+	/* width:100%; */
+	border:2px solid red;
+}
+/* .zonaA, .zonaB, .Puntos1, .Puntos2 {
+	align-items: center;
+	width:100%
+} */
+.zonas {
+	text-align:center;
+	letter-spacing:0.25rem;
+	font-weight: bold;
+ background-color: #e0e0e0; 
+}
+.Puntos11 {
+	letter-spacing:0.25rem;
+text-align:center;
+	 font-weight: bold;
+  background-color: #e0e0e0; 
+
+}
+.list-item {
+	padding: 0.2em 1rem;
+	display:flex;
+	justify-content: center;
+	align-content: center; 
+	/* font-size: 1.5rem; */
+	/* border:2px solid red; */
+}
 
 
+/*FIXTURE*/
+.group-list2 {
+	display:grid;
+	grid-template-columns: repeat(6,auto);
+	column-gap:20px;
+	width:100%; 
+		/* border:2px solid red; */
+}
+
+.equipos, .vs, .fecha, .resultado {
+  text-align: center;  /* Optional: center align text within each column */
+		/* border:2px solid red; */
+			 font-weight: bold;
+  background-color: #898787;
+		font-size:1.5rem;
+}
+.equipo1, .vs1, .equipo2, .fecha2, .resultados2 {
+				 font-weight: lighter;
+  background-color: rgb(196, 194, 194);
+		font-size: 1rem;
+}
 
 
+.fecha {
+	grid-column: span 2;
+}
+
+.list-item {
+  padding: 0.2em 0;
+  border: 1px solid #ccc;
+  text-align: center;  /* Center the list items horizontally */
+}
+
+hr {
+margin: 20px 0; /* Espacio arriba y abajo */
+}
+
+.ZonaAA, .ZonaBB {
+	letter-spacing: 0.5rem;
+	font-size: 1.5rem;
+	font-weight: bold;
+
+}
 }
 
 
