@@ -2,32 +2,49 @@ package io.paleta.model;
 
 import java.io.Serializable;
 
-public class TablaPosicion extends JsonObject implements Serializable {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+public class TablePosition extends JsonObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	public String equipo;
-	public int puntos;
-	public int tantosFavor;
-	public int tantosContra;
-	public int difTantos;
-	public int setGanados;
-	public int setPerdidos;
-	public int difSets;
+	public Team team;
+	
 	public int partidosJugados;
 	public int partidosGanados;
 	public int partidosPerdidos;
-	public int puntosDescontados;
-	public int reprogramados;
+	
+	public int puntos;
+	public int tantosFavor;
+	public int tantosContra;
+	
+	public int setGanados;
+	public int setPerdidos;
+	
+	public int difTantos;
+	public int difSets;
+	
+	@JsonIgnore
 	public String nota;
 	
+	@JsonIgnore
+	public int puntosDescontados;
 	
-	public String getEquipo() {
-		return equipo;
+	@JsonIgnore
+	public int reprogramados;
+	
+	
+	
+	public TablePosition(Team team) {
+		setTeam(team);
+	}
+
+	public Team getTeam() {
+		return team;
 	}
 	
-	public void setEquipo(String equipo) {
-		this.equipo = equipo;
+	public void setTeam(Team team) {
+		this.team = team;
 	}
 	
 	public int getPuntos() {
@@ -91,7 +108,6 @@ public class TablaPosicion extends JsonObject implements Serializable {
 	public void setPartidosGanados(int partidosGanados) {
 		this.partidosGanados = partidosGanados;
 	}
-	
 	
 	public int getPuntosDescontados() {
 		return puntosDescontados;
