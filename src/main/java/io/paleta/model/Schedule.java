@@ -31,6 +31,9 @@ public class Schedule extends JsonObject implements Serializable {
 
 	public Schedule() {
 		this.matchesClasificacion=new ArrayList<Match>();
+		 matchesSemifinal=null;
+		 matchFinal=null;
+		 
 	}
 
 	public Match getMatchFinal() {
@@ -41,17 +44,16 @@ public class Schedule extends JsonObject implements Serializable {
 		this.matchFinal = matchFinal;
 	}
 
-	
 	public void addMatchClasificacion( Match match) {
 		matchesClasificacion.add(match);
 	}
 	
-
 	public void addMatchSemifinal( Match match) {
+		if (matchesSemifinal==null)
+			matchesSemifinal=new ArrayList<Match>();
 		matchesSemifinal.add(match);
 	}
 
-	
 	
 	public List<Match> getMatchesClasificacion() {
 		return matchesClasificacion;
@@ -60,7 +62,6 @@ public class Schedule extends JsonObject implements Serializable {
 	public void setMatchesClasificacion(List<Match> matchesClasificacion) {
 		this.matchesClasificacion = matchesClasificacion;
 	}
-
 	
 	public List<Match> getMatchesSemifinal() {
 		return matchesSemifinal;
@@ -69,8 +70,6 @@ public class Schedule extends JsonObject implements Serializable {
 	public void setMatchesSemifinal(List<Match> matchesSemifinal) {
 		this.matchesSemifinal = matchesSemifinal;
 	}
-
-
 		
 	
 
