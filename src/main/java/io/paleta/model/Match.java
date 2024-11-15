@@ -1,15 +1,20 @@
 package io.paleta.model;
 
+
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonProcessingException;
+
+import io.paleta.logging.Logger;
 
 public class Match extends JsonObject implements Serializable {
-	
+				
+	static private Logger logger = Logger.getLogger(Match.class.getName());
+
 	
 	public Integer getDaybreak() {
 		return daybreak;
@@ -88,7 +93,7 @@ public class Match extends JsonObject implements Serializable {
 		str.append("{\"date\":\"" + matchdate+ "\"");
 		str.append("{\"hour\":\"" + matchdate+ "\"");
 		
-		str.append("{\"groupe\":\"" + group.getName()+ "\"");
+		str.append("{\"group\":\"" + group.getName()+ "\"");
 		str.append(", \"local\":\"" + local.getName()+ "\"");
 		str.append(", \"visitor\":\"" + visitor.getName()+ "\"");
 		
@@ -155,7 +160,151 @@ public class Match extends JsonObject implements Serializable {
 	}
 
 	public OffsetDateTime getDate() {
+		
+		if (date==null) {
+			calculateDate();
+		}
 		return date;
+	}
+
+	
+	 // static final private int TIMESTAMP_LEN = "2019-08-21T00:00:00-03:00".length();
+    
+    	
+    private void calculateDate() {
+		
+	
+		
+		String t_date = (this.matchdate==null) ? "10/12" : this.matchdate;
+		String t_hour =  (this.matchhour==null) ? "19:00" : this.matchhour;
+		
+		String s_year, s_month, s_day;
+		Integer year, month, day;
+		
+		{
+			String arr[] = t_date.replaceAll("/", "-").split("-");
+			
+			if (arr.length<3)
+				s_year = "2024";
+			else
+				s_year = arr[2];
+			
+			if (s_year.length()<4)
+				s_year="20"+s_year;
+			
+			
+			if (arr.length<2)
+				s_month = "12";
+			else
+				s_month=arr[1];
+			
+			if (s_month.length()<2)
+				s_month="0"+s_month;
+			
+			if (arr.length<1)
+				s_day = "1";
+			else
+				s_day=arr[0];
+			
+			if (s_day.length()<2)
+				s_day="0"+s_day;
+		
+			
+			try {
+				year = Integer.valueOf(s_year);
+			} catch (Exception e) {
+				logger.error(e);
+				year=2024;
+			}
+			
+			try {
+				month = Integer.valueOf(s_month);
+			} catch (Exception e) {
+				logger.error(e);
+				month=12;
+			}
+			
+			try {
+				day = Integer.valueOf(s_day);
+			} catch (Exception e) {
+				logger.error(e);
+				day=1;
+			}
+		
+		}
+		
+
+		String s_hour, s_min, s_sec;
+		Integer hour, min, sec;
+
+		String arr[] = t_hour.replaceAll("-", ":").split(":");
+		
+		if (arr.length<3)
+			s_sec = "00";
+		else
+			s_sec = arr[2];
+		
+		if (s_sec.length()<2)
+			s_sec="0"+s_sec;
+		
+		
+		
+		if (arr.length<2)
+			s_min = "00";
+		else
+			s_min=arr[1];
+		
+		if (s_min.length()<2)
+			s_min="0"+s_min;
+		
+		
+		if (arr.length<1)
+			s_hour = "19";
+		else
+			s_hour=arr[0];
+		
+		if (s_hour.length()<2)
+			s_hour="0"+s_hour;
+
+		
+		{
+		
+			try {
+				hour = Integer.valueOf(s_hour);
+			} catch (Exception e) {
+				logger.error(e);
+				hour=19;
+			}
+			
+			try {
+				min = Integer.valueOf(s_min);
+			} catch (Exception e) {
+				logger.error(e);
+				min=0;
+			}
+			
+			try {
+				sec = Integer.valueOf(s_sec);
+			} catch (Exception e) {
+				logger.error(e);
+				sec=0;
+			}		
+		}
+		
+
+		
+		String str_date = s_year +"-" + s_month + "-" + s_day + "T" + s_hour+":" + s_min + ":" + s_sec + "-03:00";
+		
+		logger.debug(str_date);
+	
+		try {
+			this.date = OffsetDateTime.parse(str_date, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+		} catch (Exception e) {
+			logger.error(e, " | Tried timestamp without GMT. " + str_date);
+		}
+		
+		
+		
 	}
 
 	public String getMatchDateStr() {
@@ -168,10 +317,14 @@ public class Match extends JsonObject implements Serializable {
 	
 	public void setMatchDate(String date) {
 		this.matchdate=date;
+		if (this.matchdate!=null)
+			this.matchdate=this.matchdate.trim();
 	}
 	
 	public void setMatchHour(String hour) {
 		this.matchhour=hour;
+		if (this.matchhour!=null)
+			this.matchhour=this.matchhour.trim();
 	}
 
 	public TournamentGroup getGroup() {
