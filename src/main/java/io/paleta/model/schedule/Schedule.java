@@ -1,4 +1,5 @@
-package io.paleta.model;
+package io.paleta.model.schedule;
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,6 +7,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import io.paleta.model.JsonObject;
+import io.paleta.model.Match;
 
 
 /*
@@ -16,24 +19,20 @@ public class Schedule extends JsonObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	
+	@JsonIgnore
 	private List<Match> matchesClasificacion;
 	
+	@JsonIgnore
 	private List<Match> matchesSemifinal;
+
 	
+	@JsonIgnore
 	private Match matchFinal;
-	
-		
-	
-	
-	
-	
 
 	public Schedule() {
 		this.matchesClasificacion=new ArrayList<Match>();
 		 matchesSemifinal=null;
 		 matchFinal=null;
-		 
 	}
 
 	public Match getMatchFinal() {

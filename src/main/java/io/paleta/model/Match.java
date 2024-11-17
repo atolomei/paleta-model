@@ -15,16 +15,10 @@ public class Match extends JsonObject implements Serializable {
 				
 	static private Logger logger = Logger.getLogger(Match.class.getName());
 
-	
-	public Integer getDaybreak() {
-		return daybreak;
-	}
-
-	public void setDaybreak(Integer daybreak) {
-		this.daybreak = daybreak;
-	}
-
 	private static final long serialVersionUID = 1L;
+
+	@JsonIgnore
+	private final long id;
 	
 	@JsonIgnore
 	private OffsetDateTime date;
@@ -47,18 +41,41 @@ public class Match extends JsonObject implements Serializable {
 	@JsonIgnore
 	public MatchResult result;
 	
-
-	@JsonIgnore
-	private String matchdate;
+	//@JsonIgnore
+	//private String matchdate;
 	
-	
-	@JsonIgnore
-	private String matchhour;
+	//@JsonIgnore
+	//private String matchhour;
 
 	@JsonIgnore
 	public Integer daybreak  = Integer.valueOf(-1);
+
+	public Match(long id) {
+		this.id=id;
+	}
 	
+	@Override 
+	public boolean equals(Object m) {
+		
+		if (!(m instanceof Match))
+			return false;
+		
+		if ( ((Match) m).getId()==getId())
+			return true;
+		
+		return false;
+	}
 	
+	public long getId() {
+		return id;
+	}
+
+	public Match(long id, Team local, Team visitor) {
+		this.id=id;
+		this.local=local;
+		this.visitor=visitor;
+	}
+
 	public String getSetStr() {
 		
 		if (sets==null)
@@ -90,18 +107,19 @@ public class Match extends JsonObject implements Serializable {
 	public String toJSON() {
 		StringBuilder str = new StringBuilder();
 		
-		str.append("{\"date\":\"" + matchdate+ "\"");
-		str.append("{\"hour\":\"" + matchdate+ "\"");
+//		str.append("{\"date\":\"" + (matchdate!=null?matchdate:"null") + "\"");
+//		str.append("{\"hour\":\"" + (matchhour!=null?matchhour:"null") + "\"");
 		
-		str.append("{\"group\":\"" + group.getName()+ "\"");
-		str.append(", \"local\":\"" + local.getName()+ "\"");
-		str.append(", \"visitor\":\"" + visitor.getName()+ "\"");
+		str.append("{\"group\":\"" + (group!=null?group.getName():"null") + "\"");
+		str.append(", \"local\":\"" +(local!=null?local.getName():"null")+ "\"");
+		str.append(", \"visitor\":\"" + (visitor!=null?visitor.getName():"null")+ "\"");
 		
 		str.append("{\"completed\":" + String.valueOf(completed) + "");
 		
 		if (result!=null) {
 			str.append(", \"result\":\"" + result.getName() + "\"");
-			str.append(", \"score\":\"" + sets.stream().map( (p) -> String.valueOf(p.puntosLocal) + "-" + String.valueOf(p.puntosVisitante)).collect(Collectors.joining(", "))  + "\"}");
+			if (sets!=null)
+				str.append(", \"score\":\"" + sets.stream().map( (p) -> String.valueOf(p.puntosLocal) + "-" + String.valueOf(p.puntosVisitante)).collect(Collectors.joining(", "))  + "\"}");
 		}
 		
 		return str.toString();
@@ -160,10 +178,9 @@ public class Match extends JsonObject implements Serializable {
 	}
 
 	public OffsetDateTime getDate() {
-		
-		if (date==null) {
-			calculateDate();
-		}
+		//if (date==null) {
+		//	calculateDate();
+		//}
 		return date;
 	}
 
@@ -171,6 +188,7 @@ public class Match extends JsonObject implements Serializable {
 	 // static final private int TIMESTAMP_LEN = "2019-08-21T00:00:00-03:00".length();
     
     	
+	/**
     private void calculateDate() {
 		
 	
@@ -267,6 +285,8 @@ public class Match extends JsonObject implements Serializable {
 			s_hour="0"+s_hour;
 
 		
+		2024-11-22T 19:00:00-03:00
+				
 		{
 		
 			try {
@@ -295,7 +315,7 @@ public class Match extends JsonObject implements Serializable {
 		
 		String str_date = s_year +"-" + s_month + "-" + s_day + "T" + s_hour+":" + s_min + ":" + s_sec + "-03:00";
 		
-		logger.debug(str_date);
+		//logger.debug(str_date);
 	
 		try {
 			this.date = OffsetDateTime.parse(str_date, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
@@ -306,26 +326,27 @@ public class Match extends JsonObject implements Serializable {
 		
 		
 	}
-
-	public String getMatchDateStr() {
-		return matchdate;
-	}
+*/
 	
-	public String getMatchHourStr() {
-		return matchhour;
-	}
+	//public String getMatchDateStr() {
+	//	return matchdate;
+	//}
 	
-	public void setMatchDate(String date) {
-		this.matchdate=date;
-		if (this.matchdate!=null)
-			this.matchdate=this.matchdate.trim();
-	}
+	//public String getMatchHourStr() {
+	//	return matchhour;
+	//}
 	
-	public void setMatchHour(String hour) {
-		this.matchhour=hour;
-		if (this.matchhour!=null)
-			this.matchhour=this.matchhour.trim();
-	}
+	//public void setMatchDate(String date) {
+	//	this.matchdate=date;
+	//	if (this.matchdate!=null)
+	//		this.matchdate=this.matchdate.trim();
+	//}
+	
+	//public void setMatchHour(String hour) {
+	//	this.matchhour=hour;
+	//	if (this.matchhour!=null)
+	//		this.matchhour=this.matchhour.trim();
+	//}
 
 	public TournamentGroup getGroup() {
 		return group;
@@ -342,22 +363,45 @@ public class Match extends JsonObject implements Serializable {
 	public void setResult(MatchResult result) {
 		this.result = result;
 	}
-
-	public String getMatchdate() {
-		return matchdate;
+	
+	public String getMatchDateStr() {
+		if (getDate()==null)
+			return null;
+			return  String.valueOf(getDate().getDayOfMonth());
+	}
+	
+	public String getMatchHourStr() {
+		if (getDate()==null)
+			return null;
+			return  String.valueOf(getDate().getHour());
 	}
 
-	public void setMatchdate(String matchdate) {
-		this.matchdate = matchdate;
+	public String getMatchMinStr() {
+		if (getDate()==null)
+			return null;
+			return  String.format("%02d", getDate().getMinute());
+	}
+	
+	
+	//
+
+	//public void setMatchdate(String matchdate) {
+	//	this.matchdate = matchdate;
+	//}
+
+
+	//public void setMatchhour(String matchhour) {
+	//	this.matchhour = matchhour;
+	//}
+	
+	public Integer getDaybreak() {
+		return daybreak;
 	}
 
-	public String getMatchhour() {
-		return matchhour;
+	public void setDaybreak(Integer daybreak) {
+		this.daybreak = daybreak;
 	}
 
-	public void setMatchhour(String matchhour) {
-		this.matchhour = matchhour;
-	}
 
 	
 }

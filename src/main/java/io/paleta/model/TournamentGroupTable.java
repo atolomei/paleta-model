@@ -10,6 +10,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.paleta.logging.Logger;
+import io.paleta.model.schedule.Schedule;
 
 
 public class TournamentGroupTable extends JsonObject implements Serializable {
