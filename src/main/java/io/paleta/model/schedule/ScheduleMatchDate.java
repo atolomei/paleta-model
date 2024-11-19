@@ -12,7 +12,6 @@ public class ScheduleMatchDate {
 	
 	private Match macth;
 	
-
 	public ScheduleMatchDate(long id, OffsetDateTime date) {
 		this.date=date;
 		this.id=id;

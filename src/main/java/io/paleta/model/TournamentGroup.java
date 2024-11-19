@@ -10,11 +10,12 @@ public class TournamentGroup extends JsonObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	public String id;
+	private String id;
 	
-	public String name;
+	private String name;
 	
-	public List<Team> equipos;
+	private List<Team> equipos;
+	
 	
 	public TournamentGroup(String name) {
 		this(name.toLowerCase().trim(), name, new ArrayList<Team>());
@@ -25,9 +26,13 @@ public class TournamentGroup extends JsonObject implements Serializable {
 	}
 	
 	public TournamentGroup(String id, String name, List<Team> equipos) {
-		this.id=id;
+		this.setId(id);
 		this.name=name;
 		this.equipos=equipos;
+	}
+	
+	public void setName( String name) {
+		this.name=name;
 	}
 	
 	public String getName() {
@@ -43,6 +48,14 @@ public class TournamentGroup extends JsonObject implements Serializable {
 
 	public void addTeam(Team team) {
 		getTeams().add(team);
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 }

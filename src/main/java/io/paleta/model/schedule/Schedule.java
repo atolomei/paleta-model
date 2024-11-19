@@ -20,15 +20,23 @@ public class Schedule extends JsonObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@JsonIgnore
+	private String fileName;
+	
+	@JsonIgnore
 	private List<Match> matchesClasificacion;
 	
 	@JsonIgnore
 	private List<Match> matchesSemifinal;
 
-	
 	@JsonIgnore
 	private Match matchFinal;
 
+	
+	public Schedule(String fileName, List<Match> matchesClasificacion) {
+		this.fileName=fileName;
+		this.matchesClasificacion=matchesClasificacion;
+		
+	}
 	public Schedule() {
 		this.matchesClasificacion=new ArrayList<Match>();
 		 matchesSemifinal=null;
@@ -52,7 +60,6 @@ public class Schedule extends JsonObject implements Serializable {
 			matchesSemifinal=new ArrayList<Match>();
 		matchesSemifinal.add(match);
 	}
-
 	
 	public List<Match> getMatchesClasificacion() {
 		return matchesClasificacion;
@@ -70,6 +77,11 @@ public class Schedule extends JsonObject implements Serializable {
 		this.matchesSemifinal = matchesSemifinal;
 	}
 		
-	
+	public String getFileName() {
+		return fileName;
+	}
 
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 }

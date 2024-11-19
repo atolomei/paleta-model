@@ -85,7 +85,7 @@ public class TournamentGroupTable extends JsonObject implements Serializable {
 		
 		for (Match match: this.schedule.getMatchesClasificacion()) {
 			
-			if (match.getGroup().equals(getGroup())) {
+			if (match.getTournamentGroup().equals(getTournamentGroup())) {
 				
 				if (!this.map.containsKey(match.local))
 					this.map.put(match.local, new TablePosition(match.local));
@@ -219,11 +219,11 @@ public class TournamentGroupTable extends JsonObject implements Serializable {
 	}
 	
 	
-	public TournamentGroup getGroup() {
+	public TournamentGroup getTournamentGroup() {
 		return group;
 	}
 
-	public void setGroup(TournamentGroup group) {
+	public void setTournamentGroup(TournamentGroup group) {
 		this.group = group;
 	}
 
