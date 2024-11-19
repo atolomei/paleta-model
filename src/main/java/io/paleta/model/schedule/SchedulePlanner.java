@@ -13,16 +13,14 @@ import java.util.Map;
 import io.paleta.logging.Logger;
 import io.paleta.model.Match;
 import io.paleta.model.Team;
-import io.paleta.util.Check;
+
 
 public class SchedulePlanner {
 			
 	static private Logger logger = Logger.getLogger(SchedulePlanner .class.getName());
 
-	static final public DateTimeFormatter df = DateTimeFormatter.ofPattern("EEE dd MMM HH:mm", Locale.forLanguageTag("es"));
-
-	
-	static NumberFormat nf_int = NumberFormat.getInstance(Locale.getDefault());
+	static final private DateTimeFormatter df = DateTimeFormatter.ofPattern("EEE dd MMM HH:mm", Locale.forLanguageTag("es"));
+	static final private NumberFormat nf_int = NumberFormat.getInstance(Locale.getDefault());
     
 	static {
 		nf_int.setMinimumFractionDigits(0);
@@ -32,24 +30,19 @@ public class SchedulePlanner {
     
 	private boolean done = false;
 	
-	
-    
-	
 	private List<List<MD>> solutions;
-
 
 	private List<Match> matches;
 	private List<ScheduleMatchDate> dates;
-										
-	private Map<String, Team> 				teamMap= new HashMap<String, Team>();
+							
+	/** auxiliar */
+	private final Map<String, Team> 			teamMap = new HashMap<String, Team>();
+	private final Map<Long, Match> 				matchMap= new HashMap<Long, Match>();
+	private final Map<Long, ScheduleMatchDate> 	dateMap = new HashMap<Long, ScheduleMatchDate>();
+
+	private long cont = 0;
 	
-	private Map<Long, Match> 				matchMap= new HashMap<Long, Match>();
-	private Map<Long, ScheduleMatchDate> 	dateMap = new HashMap<Long, ScheduleMatchDate>();
-
-	private List<Match> getMatches() {return this.matches;}
-	private List<ScheduleMatchDate> getDates() {return this.dates;}
-
-	private Map<String, List<String>> td = new HashMap<String, List<String>>();
+	private Map<String, List<String>> auxiliar = new HashMap<String, List<String>>();
 	
 	
 	/**
@@ -119,11 +112,19 @@ public class SchedulePlanner {
 	}
 	
 	
+	private List<Match> getMatches() {
+		return this.matches;
+	}
+	
+	private List<ScheduleMatchDate> getDates() {
+		return this.dates;
+	}
+	
 	public List<ScheduleMatchDate> execute() {
 		
 		this.done=false;
+		this.cont = 0;
 		this.solutions = new ArrayList<List<MD>>();
-		
 		
 		List<MD> worklist = new ArrayList<MD>();
 		solve(worklist);
@@ -160,7 +161,6 @@ public class SchedulePlanner {
 	 * @param list
 	 */
 	
-	private long cont = 0;
 	
 	private void solve(List<MD> list) {
 
@@ -207,8 +207,6 @@ public class SchedulePlanner {
 		}
 	}
 	
-
-
 	/**
 	 * 
 	 * @param list
@@ -217,23 +215,17 @@ public class SchedulePlanner {
 	 */
 	private boolean checkConstraints(List<MD> list, int current, Match ma) {
 							
-		
-		
-		if ( (dates.get(current).getDate().getMinute()==30) && (ma.getLocal().getName().toLowerCase().startsWith("CUBA") || ma.getVisitor().getName().toLowerCase().startsWith("CUBA")))
-			return false;
-		
-		
-		this.td.clear();
+		this.auxiliar.clear();
 		
 		for (MD m: list) {
 
 			String key=String.format("%4d %02d %02d", m.getDate().getYear(), m.getDate().getMonthValue(), m.getDate().getDayOfMonth());
 			
-			if (!this.td.containsKey(key))
-				this.td.put(key, new ArrayList<String>());
+			if (!this.auxiliar.containsKey(key))
+				this.auxiliar.put(key, new ArrayList<String>());
 
-			this.td.get(key).add(m.getMacth().getLocal().getId());
-			this.td.get(key).add(m.getMacth().getVisitor().getId());
+			this.auxiliar.get(key).add(m.getMacth().getLocal().getId());
+			this.auxiliar.get(key).add(m.getMacth().getVisitor().getId());
 		}
 		
 		//d_index = 0;
@@ -264,16 +256,16 @@ public class SchedulePlanner {
 		
 		
 		
-		if (!this.td.containsKey(key))
+		if (!this.auxiliar.containsKey(key))
 			return true;
 			
-		if (this.td.get(key).contains(ma.getLocal().getId())) {
+		if (this.auxiliar.get(key).contains(ma.getLocal().getId())) {
 			//logger.debug(teamMap.get(ma.getLocal().getId()).getName() +" is already on -> " + key);
 			//logger.debug("constraint -> " + key + "  local: " + ma.getLocal().getName());
 			return false;
 		}
 					
-		if (this.td.get(key).contains(ma.getVisitor().getId())) {
+		if (this.auxiliar.get(key).contains(ma.getVisitor().getId())) {
 			//logger.debug(teamMap.get(ma.getVisitor().getId()).getName() +" is already on -> " + key);
 			//logger.debug("constraint -> " + key + " visitor: " + ma.getVisitor().getName());
 			return false;
@@ -281,9 +273,8 @@ public class SchedulePlanner {
 		return true;
 	}
 	
-	
 	private boolean isSolution(List<MD> list) {
-		return list.size()==20 || list.size()==getMatches().size() || list.size()==getDates().size();
+		return list.size()==getMatches().size() || list.size()==getDates().size();
 	}
 	
 	private boolean contains(List<MD> list, Match match) {
@@ -298,7 +289,16 @@ public class SchedulePlanner {
 		return this.done;
 	}
 	
+	private final Map<Long, Match> getMatchMap() {
+		return this.matchMap;
+	}
 	
+	private final Map<Long, ScheduleMatchDate> getDateMap() {
+		return this.dateMap;
+	}
+	
+	
+	/**
 	private String getIDs(List<ScheduleMatchDate> next) {
 		
 		StringBuilder str = new StringBuilder();
@@ -310,13 +310,8 @@ public class SchedulePlanner {
 		}
 				);
 		return str.toString();
-	}
-
-	private Map<Long, Match> getMatchMap() {
-		return this.matchMap;
-	}
+	}*/
 	
-	private Map<Long, ScheduleMatchDate> getDateMap() {
-		return this.dateMap;
-	}	
+
+
 }
