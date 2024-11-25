@@ -5,9 +5,9 @@ import java.util.List;
 
 public enum MatchResult {
 	
-	LOCAL( 1, "local"),
-	VISITOR(2, "visitor"),
-	TIE(3, "tie");
+	LOCAL( 1, "L"),
+	VISITOR(2, "V"),
+	DRAW(3, "D");
 	
 	static List<MatchResult> results;
 	
@@ -35,7 +35,7 @@ public enum MatchResult {
 	static MatchResult get(int v) {
 		if (v==LOCAL.code) return LOCAL;
 		if (v==VISITOR.code) return VISITOR;
-		return TIE;
+		return DRAW;
 	}
 
 	public static List<MatchResult> getValues() {
@@ -47,7 +47,7 @@ public enum MatchResult {
 		
 		results.add( LOCAL );
 		results.add( VISITOR); 
-		results.add( TIE );
+		results.add( DRAW );
 
 		return results;
 	}

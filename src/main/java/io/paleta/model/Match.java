@@ -324,6 +324,12 @@ public class Match extends JsonObject implements Serializable {
 	}
 	
 
+	public String getResultCode() {
+		if (getResult()==null)
+			return null;
+		return getResult().getName();
+	}
+	
 	public MatchResult getResult() {
 		return result;
 	}

@@ -18,6 +18,10 @@ import io.paleta.model.Match;
 public class Schedule extends JsonObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	
+	public final int CALENDAR_ROUND_ROBIN 	= 0;
+	public final int RAW_ROUND_ROBIN 		= 1;
 	
 	@JsonIgnore
 	private String fileName;
@@ -31,6 +35,8 @@ public class Schedule extends JsonObject implements Serializable {
 	@JsonIgnore
 	private Match matchFinal;
 
+	private int scheduleType = 0;
+	
 	
 	public Schedule(String fileName, List<Match> matchesClasificacion) {
 		this.fileName=fileName;
@@ -55,7 +61,7 @@ public class Schedule extends JsonObject implements Serializable {
 		matchesClasificacion.add(match);
 	}
 	
-	public void addMatchSemifinal( Match match) {
+	public void addMatchSemifinal(Match match) {
 		if (matchesSemifinal==null)
 			matchesSemifinal=new ArrayList<Match>();
 		matchesSemifinal.add(match);
@@ -84,4 +90,16 @@ public class Schedule extends JsonObject implements Serializable {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
+	
+	public void scheduleType( int type) {
+		this.scheduleType=type;
+	}
+	
+	public int scheduleType() {
+		return this.scheduleType;
+	}
+	
+	
+	
+
 }

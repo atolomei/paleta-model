@@ -28,6 +28,9 @@ public class RoundRobinGenerator {
 	
 	private List<TournamentGroup> groups;
 
+	private List<OffsetDateTime> matchDates;
+	
+	
 	private long matchId = 0;
 	
 	
@@ -35,6 +38,63 @@ public class RoundRobinGenerator {
 			this.groups=tournamentGroups;
 	}
 
+	
+	public List<OffsetDateTime> getMatchDates() {
+		
+		if (matchDates==null) {
+			
+			matchDates = new ArrayList<OffsetDateTime>();
+			
+			int yr  []   = {2024};
+			
+			int mth []   = {11, 11, 11, 11, 
+							11, 11, 11, 
+							11, 11, 11, 11, 
+							12, 12 , 12,
+							12, 12, 12,
+							12, 12, 12};
+			
+			int dom []   = {22, 22, 22, 22, 
+							27, 27, 27, 
+							29, 29, 29, 29, 
+							4, 4 , 4,
+							6, 6, 6,
+							11, 11, 11};
+			
+			int hours [] = {19, 19, 20, 20, 
+							19, 19, 20, 
+							19, 19, 20, 20, 
+							19, 19, 20,
+							19, 19, 20,
+							19, 19, 20};
+			
+			int min [] 	 = {0, 30, 0, 30, 
+							0, 30, 0, 
+							0, 30, 0, 30, 
+							0, 30, 0,
+							0, 30, 0,
+							0, 30, 0};
+			
+			
+			for (int n=0; n<dom.length;n++) {
+				
+			
+				OffsetDateTime md = OffsetDateTime.of ( 
+						yr	  [n % yr.length ], 
+						mth   [n % mth.length ], 
+						dom   [n % dom.length ],
+						hours [n % hours.length ], 
+						min   [n % min.length ],
+						0, 
+						0, 
+						ZoneOffset.of("-03:00"));
+				
+				matchDates.add(md);
+			}
+		}
+		
+		return  matchDates;
+	}
 	public List<ScheduleMatchDate> execute() {
 
 		Check.requireNonNull(groups);
@@ -50,53 +110,15 @@ public class RoundRobinGenerator {
 		
 		dates = new ArrayList<ScheduleMatchDate>();
 		
-		int yr  []   = {2024};
+		int index = 0;
 		
-		int mth []   = {11, 11, 11, 11, 
-						11, 11, 11, 
-						11, 11, 11, 11, 
-						12, 12 , 12,
-						12, 12, 12,
-						12, 12, 12};
+		//int d_index  = 0;
 		
-		int dom []   = {22, 22, 22, 22, 
-						27, 27, 27, 
-						29, 29, 29, 29, 
-						4, 4 , 4,
-						6, 6, 6,
-						11, 11, 11};
-		
-		int hours [] = {19, 19, 20, 20, 
-						19, 19, 20, 
-						19, 19, 20, 20, 
-						19, 19, 20,
-						19, 19, 20,
-						19, 19, 20};
-		
-		int min [] 	 = {0, 30, 0, 30, 
-						0, 30, 0, 
-						0, 30, 0, 30, 
-						0, 30, 0,
-						0, 30, 0,
-						0, 30, 0};
-		
-		int index    = 0;
-		
-		int d_index  = 0;
+		//getMatchDates().get(index)
 		
 		for (Match match: matches) {
-			
-			OffsetDateTime md = OffsetDateTime.of ( yr	  [d_index % yr.length ], 
-													mth   [d_index % mth.length ], 
-													dom   [d_index % dom.length ],
-													hours [d_index % hours.length ], 
-													min   [d_index % min.length ],
-													0, 
-													0, 
-													ZoneOffset.of("-03:00"));
-			
-			d_index++;
-			dates.add(new ScheduleMatchDate(index, md, match));
+			//d_index++;
+			dates.add(new ScheduleMatchDate(index, match.getDate(), match));
 			index++;
 		}
 		
@@ -115,8 +137,9 @@ public class RoundRobinGenerator {
 			int visitor_index = 0;
 			for (Team visitor:group.getTeams()) {
 				if (visitor_index > local_index) {
-					Match match = new Match(matchId++, local, visitor);
+					Match match = new Match(++matchId, local, visitor);
 					match.setTournamentGroup(group);
+					match.setDate(OffsetDateTime.now());
 					list.add(match);
 				}
 				visitor_index++;

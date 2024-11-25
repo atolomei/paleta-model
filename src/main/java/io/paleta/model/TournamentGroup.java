@@ -16,6 +16,7 @@ public class TournamentGroup extends JsonObject implements Serializable {
 	
 	private List<Team> equipos;
 	
+	private List<Match> matches;
 	
 	public TournamentGroup(String name) {
 		this(name.toLowerCase().trim(), name, new ArrayList<Team>());
@@ -30,7 +31,14 @@ public class TournamentGroup extends JsonObject implements Serializable {
 		this.name=name;
 		this.equipos=equipos;
 	}
+
+	public List<Match> getMatches() {
+		return this.matches;
+	}
 	
+	public void setMatches(List<Match> matches) {
+		this.matches=matches;
+	}
 	public void setName( String name) {
 		this.name=name;
 	}
