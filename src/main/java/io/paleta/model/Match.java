@@ -104,16 +104,17 @@ public class Match extends JsonObject implements Serializable {
 	public String toJSON() {
 		StringBuilder str = new StringBuilder();
 		
+		str.append("{\"id\":" + String.valueOf(id));
 		str.append("{\"group\":\"" + (group!=null?group.getName():"null") + "\"");
 		str.append(", \"local\":\"" +(local!=null?local.getName():"null")+ "\"");
 		str.append(", \"visitor\":\"" + (visitor!=null?visitor.getName():"null")+ "\"");
 		
-		str.append("{\"completed\":" + String.valueOf(completed) + "");
+		str.append("\"completed\":" + String.valueOf(completed) + "");
 		
 		if (result!=null) {
 			str.append(", \"result\":\"" + result.getName() + "\"");
 			if (sets!=null)
-				str.append(", \"score\":\"" + sets.stream().map( (p) -> String.valueOf(p.puntosLocal) + "-" + String.valueOf(p.puntosVisitante)).collect(Collectors.joining(", "))  + "\"}");
+				str.append(", \"score\":\"" + sets.stream().map( (p) -> String.valueOf(p.puntosLocal) + "-" + String.valueOf(p.puntosVisitante)).collect(Collectors.joining(", "))  + "\"");
 		}
 		
 		return str.toString();
